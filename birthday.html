@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🎂 Happy Birthday!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      font-family: "Comic Sans MS", cursive;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+
+    #message {
+      font-size: 22px;
+      width: 80%;
+      max-width: 500px;
+      min-height: 80px;
+      margin-top: 10px;
+    }
+
+    button {
+      background-color: white;
+      color: #ff66b2;
+      border: none;
+      padding: 15px 25px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 30px;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+
+  <h1>🎉 Happy Birthday, My Dear Friend! 🎂</h1>
+  <p id="message"></p>
+  <button onclick="startSurprise()">Click for a Surprise 💖</button>
+
+  <script>
+    // Typewriter Effect
+    const messageText = "Wishing you a day filled with smiles, laughter, and beautiful memories. You are amazing and deserve the best birthday ever! 💕🎈";
+    const messageElement = document.getElementById("message");
+    let index = 0;
+
+    function typeWriter() {
+      if (index < messageText.length) {
+        messageElement.innerHTML += messageText.charAt(index);
+        index++;
+        setTimeout(typeWriter, 50);
+      }
+    }
+
+    // Confetti Animation
+    const confetti = document.getElementById("confetti");
+    const ctx = confetti.getContext("2d");
+    confetti.width = window.innerWidth;
+    confetti.height = window.innerHeight;
+
+    const pieces = [];
+    const numPieces = 150;
+
+    for (let i = 0; i < numPieces; i++) {
+      pieces.push({
+        x: Math.random() * confetti.width,
+        y: Math.random() * confetti.height,
+        size: Math.random() * 6 + 2,
+        color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+        speedY: Math.random() * 3 + 1,
+        speedX: Math.random() * 2 - 1
+      });
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, confetti.width, confetti.height);
+      pieces.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        p.y += p.speedY;
+        p.x += p.speedX;
+        if (p.y > confetti.height) p.y = 0;
+      });
+      requestAnimationFrame(drawConfetti);
+    }
+
+    function startSurprise() {
+      typeWriter();
+      drawConfetti();
+    }
+
+    window.addEventListener("resize", () => {
+      confetti.width = window.innerWidth;
+      confetti.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
